@@ -15,7 +15,9 @@ import os
 
 DEBUG = os.getenv("DEBUG", "False") == "True"
 SECRET_KEY = os.getenv("SECRET_KEY", "change-me")
-ALLOWED_HOSTS = ["*"]  # temporary, we’ll restrict after deploy
+ALLOWED_HOSTS = ["paskal-instrument.onrender.com",
+    "localhost",
+    "127.0.0.1",]  # temporary, we’ll restrict after deploy
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
