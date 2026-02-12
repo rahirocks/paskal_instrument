@@ -15,9 +15,14 @@ import os
 
 DEBUG = os.getenv("DEBUG", "False") == "True"
 SECRET_KEY = os.getenv("SECRET_KEY", "change-me")
-ALLOWED_HOSTS = ["paskal-instrument.onrender.com",
-    "localhost",
-    "127.0.0.1",]  # temporary, we’ll restrict after deploy
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+
+RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
+
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
+ALLOWED_HOSTS.append("paskal-instrument.onrender.com")
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
