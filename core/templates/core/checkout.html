@@ -1,0 +1,57 @@
+{% extends "core/base.html" %}
+{% block title %}Checkout | PASKAL INSTRUMENT{% endblock %}
+
+{% block content %}
+<h1 class="text-3xl font-semibold" data-aos="fade-up">Checkout</h1>
+<p class="mt-2 text-neutral-300" data-aos="fade-up">Place your order. We'll contact you to confirm lead time & delivery.</p>
+
+<div class="mt-8 grid lg:grid-cols-2 gap-6">
+    <div class="rounded-2xl border border-white/10 bg-white/5 p-6" data-aos="fade-up">
+        <h2 class="text-lg font-semibold">Customer Details</h2>
+
+        <form method="post" class="mt-4 space-y-4">
+            {% csrf_token %}
+            {% for field in form %}
+            <div>
+                <label class="text-lg font-medium ">{{field.label}}</label>
+                <div class="mt-2 text-black">{{field}}</div>
+                {% if field.errors %}
+                    <p class="mt-1 text-sm text-red-300">{{field.errors|striptags}}</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <button class="w-full rounded-xl bg-white text-black px-5 py-3 font-medium hover:opacity-90 transition">
+                Place order
+            </button>
+        </form>
+    </div>
+    <div class="rounded-2xl border border-white/10 bg-white/5 p-6" data-aos="fade-up">
+        <h2 class="text-lg font-semibold">Order Summary</h2>
+        <div class="mt-4 space-y-3">
+            {% for line in items %}
+            <div class="flex justify-between text-sm">
+                <div>
+                    <div class="font-medium">{{line.product.name}}</div>
+                    <div class="text-xs text-neutral-400">Qty:{{line.qty}}</div>
+                </div>
+                <div class="font-semibold">${{line.line_total}}</div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="mt-6 flex justify-between border-t border-white/10 pt-4">
+            <div class="text-neutral-300">Subtotal</div>
+            <div class="text-xl font-semibold">${{subtotal}}</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.querySelectorAll("input, textarea").forEach(el =>{
+        el.classList.add(
+            "w-full","rounded-xl","border","border-white/10","bg-neutral-950/40", "px-3",
+            "py-2","text-neutral-100","outline-none","focus: ring-2","focus:ring-indigo-400/30"
+        );
+    });
+</script>
+{% endblock %}

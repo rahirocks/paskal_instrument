@@ -1,0 +1,69 @@
+{% extends "core/base.html" %}
+{% block title %}Cart | PASKAL INSTRUMENT{% endblock %}
+
+{% block content %}
+<h1 class="text-3xl font-semibold" data-aos="fade-up">Your Cart</h1>
+
+{% if items %}
+<div class="mt-6 rounded-2xl border border-white/10 bg-white/5 overflow-hidden" data-aos="fade-up">
+    <table class="w-full text-sm">
+        <thead class="bg-white/5 text-neutral-300">
+            <tr>
+                <th class="text-left p-4">Product</th>
+                <th class="text-left p-4">Qty</th>
+                <th class="text-left p-4">Price</th>
+                <th class="text-left p-4">Total</th>
+                <th class="p-4"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for line in items %}
+            <tr class="border-t border-white/10">
+                <td class="p-4">
+                    <div class="font-medium">{{line.product.name}}</div>
+                    <div class="text-neutral-400 text-xs">SKU: {{line.product.sku}}</div>
+                </td>
+                <td class="p-4">
+                    <form method="post" action="/cart/update/{{line.product.id}}/" class="flex items-center gap-2">
+                        {% csrf_token %}
+                        <input name="qty" type="number" min="1" value="{{line.qty}}" class="w-20 rounded-lg bg-neutral-950/40 border border-white/10 px-2 py-2"/>
+                        <button class="rounded-lg border border-white/15 px-3 py-2 hover:bg-white/10 transition" type="submit">
+                            Update
+                        </button>
+                    </form>
+                </td>
+                <td class="p-4">${{line.product.price}}</td>
+                <td class="p-4 font-semibold">${{line.line_total}}</td>
+                <td class="p-4">
+                    <form method="post" action="/cart/remove/{{line.product.id}}/">
+                        {% csrf_token %}
+                        <button class="rounded-lg border border-red-400/30 text-red-200 px-3 py-2 hover:bg-red-500/10 transition" type="submit">
+                            remove
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="mt-6 flex items-center justify-between" data-aos="fade-up">
+    <div class="text-neutral-300">Subtotal</div>
+    <div class="text-xl font-semibold">${{subtotal}}</div>
+</div>
+<div class="mt-6 flex gap-3" data-aos="fade-up">
+    <a href="/products/" class="rounded-xl border border-white/15 px-5 py-3 hover:bg-white/10 transition">
+        Continue Shopping
+    </a>
+    <a href="/checkout/" class="rounded-xl bg-white text-black px-5 py-3 font-medium hover:opacity-90 transition">
+        checkout
+    </a>
+</div>
+
+{% else %}
+    <p class="mt-4 text-neutral-300" data-aos="fade-up">Your cart is empty.</p>
+    <a href="/products/" class="mt-6 inline-block rounded-xl bg-white text-black px-5 py-3 font-medium hover:opacity-90 transition">
+        Browser Products
+    </a>
+{% endif %}
+{% endblock %}
